@@ -1,4 +1,5 @@
 import React from 'react'
+
 import styles from "./sidebar.module.css"
 import Links from './Links/Links';
 import Image from 'next/image';
@@ -78,6 +79,7 @@ const menuItems = [
 ];
 
 const Sidbar = () => {
+
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -104,6 +106,10 @@ const Sidbar = () => {
           ))
         }
       </ul>
+      <button className={styles.logout}>
+        <MdLogout/>
+        Logout
+      </button>
     </div>
   )
 }
