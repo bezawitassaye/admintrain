@@ -10,6 +10,7 @@ import mongoose from "mongoose";
     } catch (error) {
       
         console.log("data base do not connected")
+       
         
     }
  }
