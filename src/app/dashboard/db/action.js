@@ -59,3 +59,24 @@ export const addProduct = async (formData) => {
         return { error: "Failed to create product" }; // Handle errors appropriately
     }
 };
+
+
+export const deleteProduct = async (formData) => {
+    const { id } = Object.fromEntries(formData);
+
+    try {
+        await connect(); // Await connection
+        
+       
+        await Product.findByIdAndDelete(id);
+        console.log("Product created");
+
+        revalidatePath("/dashboard/products");
+
+        // Return the redirect URL
+     
+    } catch (error) {
+        console.error(error);
+        return { error: "Failed to delete product" }; // Handle errors appropriately
+    }
+};
