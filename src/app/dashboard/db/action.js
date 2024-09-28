@@ -1,35 +1,61 @@
+"use server";
 import { revalidatePath } from "next/cache";
 import { connect } from "./db";
-import { User } from "./models";
-import { redirect } from "next/dist/server/api-utils";
-import bcrypt from "bcrypt"
+import { Product, User } from "./models";
+import bcrypt from "bcrypt";
 
-export const addUser = async(formData)=>{
-    "use server"
-    const {username,email,password,phone,address,isAdmin,isActive}=Object.fromEntries(formData);
+export const addUser = async (formData) => {
+    const { username, email, password, phone, address, isAdmin, isActive } = Object.fromEntries(formData);
 
     try {
-        connect()
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(password,salt)
+        await connect(); // Await connection
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = new User({
             username,
             email,
-            password:hashedPassword,
+            password: hashedPassword,
             phone,
             address,
             isAdmin,
-            isActive
+            isActive,
+        });
+        await newUser.save();
+        console.log("User created");
 
-        })
-        await newUser.save()
-        console.log("user created")
+        revalidatePath("/dashboard/users");
+
+        // Return the redirect URL
+        return { redirect: "/dashboard/users" }; 
     } catch (error) {
-        console.log(error)
-        
-        
+        console.error(error);
+        return { error: "Failed to create user" }; // Handle errors appropriately
     }
+};
 
-    revalidatePath("/dashboard/users")
-    redirect("/dashboard/users")
-}
+export const addProduct = async (formData) => {
+    const { title, desc, price, stock, color, size } = Object.fromEntries(formData);
+
+    try {
+        await connect(); // Await connection
+        
+        const newProduct = new Product({
+            title,
+            desc,
+            price,
+            stock,
+            color,
+            size,
+        });
+        await newProduct.save();
+        console.log("Product created");
+
+        revalidatePath("/dashboard/products");
+
+        // Return the redirect URL
+        return { redirect: "/dashboard/products" }; 
+    } catch (error) {
+        console.error(error);
+        return { error: "Failed to create product" }; // Handle errors appropriately
+    }
+};
