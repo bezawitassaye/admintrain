@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Pagination from '@/app/components/Pagination/Pagination';
 import { getusers } from '../db/usersdata';
 import {searchParams} from "next/navigation"
+import { deleteUser } from '../db/action';
 
 const Page = async ({ searchParams }) => {
     const q = searchParams?.q || "";
@@ -59,9 +60,15 @@ const Page = async ({ searchParams }) => {
                                             View
                                         </button>
                                     </Link>
+                                    <form action={deleteUser}>
+                                       <input type='hidden' name='id' value={user._id}/>
+                     
                                     <button className={`${styles.button} ${styles.delete}`}>
-                                        Delete
-                                    </button>
+                 
+                    
+                                          Delete
+                                      </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

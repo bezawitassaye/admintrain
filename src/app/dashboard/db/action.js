@@ -69,7 +69,7 @@ export const deleteProduct = async (formData) => {
         
        
         await Product.findByIdAndDelete(id);
-        console.log("Product created");
+        console.log("Product deleted");
 
         revalidatePath("/dashboard/products");
 
@@ -78,5 +78,25 @@ export const deleteProduct = async (formData) => {
     } catch (error) {
         console.error(error);
         return { error: "Failed to delete product" }; // Handle errors appropriately
+    }
+};
+
+export const deleteUser = async (formData) => {
+    const { id } = Object.fromEntries(formData);
+
+    try {
+        await connect(); // Await connection
+        
+       
+        await User.findByIdAndDelete(id);
+        console.log("user deleted");
+
+        revalidatePath("/dashboard/users");
+
+        // Return the redirect URL
+     
+    } catch (error) {
+        console.error(error);
+        return { error: "Failed to delete user" }; // Handle errors appropriately
     }
 };
