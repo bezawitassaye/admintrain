@@ -4,7 +4,10 @@ import Search from '@/app/components/Search/Search'
 import Link from 'next/link'
 import Image from 'next/image'
 import Pagination from '@/app/components/Pagination/Pagination'
-const page = () => {
+import { getusers } from '../db/usersdata'
+const page = async () => {
+  const users = await getusers();
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -26,26 +29,31 @@ const page = () => {
              </tr>
           </thead>
           <tbody>
-            <tr>
+            {users.map((user)=>(
+               
+            <tr key={user._id}>
+              { console.log(user.isAdmin)}
+              
               <td>
                 <div className={styles.user}>
                   <Image
-                  src="/avatar.png"
+                  src={user.img || "/avatar.png"}
                   alt=''
                   width={40}
                   height={40}
                   className={styles.userimage}
                   />
-                  Bezaeit
+                  {user.username}
                 </div>
               </td>
-              <td>jhon@gmail.com</td>
-              <td>13.01.2024</td>
-              <td>Admin</td>
-              <td>active</td>
+              <td>{user.email}</td>
+              <td>{user.createdAt?.toString().slice(4,16)}</td>
+                
+              <td>{user.isActive?"active":"passive"}</td>
+              <td>{user.isAdmin?"Admin":"Client"}</td>
               <td>
                 <div className={styles.buttons}>
-                <Link href="/dashboard/users/test">
+                <Link href={`/dashboard/users/${user._id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
@@ -58,6 +66,7 @@ const page = () => {
                 
               </td>
             </tr>
+            ))}
           </tbody>
       </table>
       <Pagination/>
