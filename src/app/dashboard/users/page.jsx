@@ -5,8 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Pagination from '@/app/components/Pagination/Pagination'
 import { getusers } from '../db/usersdata'
-const page = async () => {
-  const users = await getusers();
+const page = async ({searchParams}) => {
+  const q = searchParams?.q || ""
+  const users = await getusers(q);
 
   return (
     <div className={styles.container}>

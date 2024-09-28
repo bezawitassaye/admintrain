@@ -13,7 +13,13 @@ const Search = ({placeholder}) => {
 
   const handleSearch=(e)=>{
     const params = new URLSearchParams(searchParams);
-    params.set("q",e.target.value);
+    if(e.target.value){
+      params.set("q",e.target.value);
+
+    }else{
+      params.delete("q")
+    }
+    
     replace(`${pathname}?${params}`)
   }
   return (
