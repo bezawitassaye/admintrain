@@ -3,7 +3,7 @@ import { connect } from "./db"
 import { User } from "./models"
 
 export const getusers = async (q)=>{
-    console.log(q)
+
     const regex = new RegExp(q,"i")
     try {
         connect()
