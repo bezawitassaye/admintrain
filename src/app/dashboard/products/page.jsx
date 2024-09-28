@@ -36,7 +36,7 @@ const page = () => {
                   height={40}
                   className={styles.userimage}
                   />
-                  Iphone
+                  Ihone
                 </div>
               </td>
               <td>Desc</td>
