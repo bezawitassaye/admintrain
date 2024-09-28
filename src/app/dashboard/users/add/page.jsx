@@ -1,9 +1,10 @@
 import React from 'react'
 import styles from "./add.module.css"
+import { addUser } from '../../db/action'
 const page = () => {
   return (
     <div className={styles.container}>
-        <form action="" className={styles.form}>
+        <form action={addUser} className={styles.form}>
             <input type="text" placeholder='username' name='username' required />
             <input type="email" placeholder='email' name='email' required />
             <input type="password" placeholder='password' name='password' required />
