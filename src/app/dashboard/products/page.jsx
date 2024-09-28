@@ -4,7 +4,12 @@ import Search from '@/app/components/Search/Search'
 import Link from 'next/link'
 import Image from 'next/image'
 import Pagination from '@/app/components/Pagination/Pagination'
-const page = () => {
+
+import { getProduct } from '../db/usersdata'
+const page = async ({searchParams}) => {
+     const q = searchParams?.q || "";
+    const page = Number(searchParams?.page) || 1; // Ensure page is a number
+    const { products, count } = await getProduct(q, page);
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -16,6 +21,7 @@ const page = () => {
       </div>
       <table className={styles.table}>
           <thead>
+           
              <tr>
                <td>Title</td>
                <td>Descrition</td>
@@ -26,26 +32,27 @@ const page = () => {
              </tr>
           </thead>
           <tbody>
-            <tr>
+          {products.map(product=>(
+            <tr key={product._id}>
               <td>
                 <div className={styles.product}>
                   <Image
-                  src="/avatar.png"
+                  src={product.img || "/avatar.png"}
                   alt=''
                   width={40}
                   height={40}
                   className={styles.userimage}
                   />
-                  Ihone
+                  {product.title}
                 </div>
               </td>
-              <td>Desc</td>
-              <td>$999</td>
-              <td>13.01.2024</td>
-              <td>34</td>
+              <td>{product.desc}</td>
+              <td>${product.price}</td>
+              <td>{product.createdAt?.toString().splice(4,16)}</td>
+              <td>{product.stock}</td>
               <td>
                 <div className={styles.buttons}>
-                <Link href="/dashboard/products/test">
+                <Link href= {`/dashboard/products/${product._id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
@@ -58,9 +65,10 @@ const page = () => {
                 
               </td>
             </tr>
+            ))}
           </tbody>
       </table>
-      <Pagination/>
+      <Pagination count={count}/>
     </div>
   )
 }
