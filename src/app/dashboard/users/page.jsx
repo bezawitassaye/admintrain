@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a use ..."/>
+        <Search placeholder="Search for a user ..."/>
         <Link href="/dashboard/users/add">
            <button className={styles.addButton}>Add New</button>
         </Link>
@@ -40,7 +40,7 @@ const page = () => {
                 </div>
               </td>
               <td>jhon@gmail.com</td>
-              <td>13.01.2022</td>
+              <td>13.01.2024</td>
               <td>Admin</td>
               <td>active</td>
               <td>
