@@ -174,3 +174,41 @@ export const updateUser = async (formData) => {
         return { error: "Failed to update user" }; // Return error message
     }
 };
+
+export const updateproduct = async (formData) => {
+    const { id, title, price, desc, stock, size, color } = Object.fromEntries(formData);
+
+    try {
+        await connect(); // Await connection
+
+        const updateFields = {
+            title, 
+            price, 
+            desc, 
+            stock, 
+            size,
+             color
+        };
+
+        // Clean up fields
+        Object.keys(updateFields).forEach((key) => {
+            if (updateFields[key] === "" || updateFields[key] === undefined) {
+                delete updateFields[key];
+            }
+        });
+
+        console.log("product update fields:", updateFields); // Log fields being updated
+
+        // Update user in the database
+        await Product.findByIdAndUpdate(id, updateFields);
+        console.log("User updated in DB");
+
+        revalidatePath("/dashboard/products");
+
+        // Return the redirect URL
+        return { redirect: "/dashboard/products" }; // Should redirect to the users list
+    } catch (error) {
+        console.error("Error updating products:", error); // Log error
+        return { error: "Failed to update product" }; // Return error message
+    }
+};
