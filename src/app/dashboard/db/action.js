@@ -212,3 +212,5 @@ export const updateproduct = async (formData) => {
         return { error: "Failed to update product" }; // Return error message
     }
 };
+
+
